@@ -1,14 +1,18 @@
 ;
 /* ########## モジュール読込 ########## */
 import gulp             from 'gulp';
+import cleancss         from 'gulp-clean-css';
 import ejs              from 'gulp-ejs';
+import htmlmin          from 'gulp-htmlmin';
 import imagemin         from 'gulp-imagemin';
 import imagemin_mozjpeg from 'imagemin-mozjpeg';
+import phtmlsimplecomp  from 'gulp-phtml-simple-comp';
 import plumber          from 'gulp-plumber';
 import rename           from 'gulp-rename';
 import sassdart         from 'sass';
 import sassgulp         from 'gulp-sass';
 import typescript       from 'gulp-typescript';
+import uglify           from 'gulp-uglify';
 
 const sass          = sassgulp(sassdart);
 
@@ -37,18 +41,50 @@ var array_path = {
                   'src/**/*.+(gif|jpg|png|svg)',
                   '!src/_**/*',
                   '!src/**/_*'
+                ],
+    copy        :[
+                  'prototype/**/*',
+                  '!prototype/**/*.+(ejs|scss|ts|gif|jpg|png|svg)',
+                  '!prototype/_**/*',
+                  '!prototype/**/_*'
                 ]
               },
 /* ********** prototype (ローカルテスト) ********** */
   prototype   :{
     path        :'prototype/',
-    ejs         :[
-                  'prototype/**/*.ejs',
+    html        :[
+                  'prototype/**/*.html',
+                  '!prototype/_**/*',
+                  '!prototype/**/_*'
+                ],
+    php         :[
+                  'prototype/**/*.php',
+                  '!prototype/_**/*',
+                  '!prototype/**/_*'
+                ],
+    css         :[
+                  'prototype/**/*.css',
+                  '!prototype/_**/*',
+                  '!prototype/**/_*'
+                ],
+    javascript  :[
+                  'prototype/**/*.js',
+                  '!prototype/_**/*',
+                  '!prototype/**/_*'
+                ],
+    copy        :[
+                  'prototype/**/*',
+                  '!prototype/**/*.+(html|php|css|js)',
                   '!prototype/_**/*',
                   '!prototype/**/_*'
                 ]
+              },
+/* ********** release (納品) ********** */
+  release     :{
+    path        :'release/'
               }
-}
+};
+
 
 /* ########## prototype ローカルテスト版作成 ########## */
 /* ========== execution_ejs EJSのコンパイル ========== */
@@ -86,6 +122,63 @@ function compless_image(arg_function_callback) {
     .pipe(gulp.dest(array_path.prototype.path));
   arg_function_callback();
 }
+/* ========== copy_origin2prototype ファイルのコピー(origin to prototype) ========== */
+function copy_origin2prototype(arg_function_callback) {
+  gulp.src(array_path.origin.copy)
+    .pipe(plumber())
+    .pipe(gulp.dest(array_path.prototype.path));
+  arg_function_callback();
+}
 
 
-export default gulp.parallel(execution_ejs,execution_sass,execution_typescript,compless_image);
+/* ########## release 納品ファイル作成 ########## */
+function execution_release(arg_function_callback) {
+  gulp.parallel(compress_html);
+  arg_function_callback();
+}
+/* ========== compress_html HTMLの圧縮 ========== */
+function compress_html(arg_function_callback) {
+  gulp.src(array_path.prototype.html)
+    .pipe(plumber())
+    .pipe(htmlmin({collapseWhitespace:true}))
+    .pipe(gulp.dest(array_path.release.path));
+  arg_function_callback();
+}
+/* ========== compress_php PHPの圧縮 ========== */
+function compress_php(arg_function_callback) {
+  gulp.src(array_path.prototype.php)
+    .pipe(plumber())
+    .pipe(phtmlsimplecomp())
+    .pipe(gulp.dest(array_path.release.path));
+  arg_function_callback();
+}
+/* ========== compress_css CSSの圧縮 ========== */
+function compress_css(arg_function_callback) {
+  gulp.src(array_path.prototype.css)
+    .pipe(plumber())
+    .pipe(cleancss())
+    .pipe(gulp.dest(array_path.release.path));
+  arg_function_callback();
+}
+/* ========== compress_javascript JSの圧縮 ========== */
+function compress_javascript(arg_function_callback) {
+  gulp.src(array_path.prototype.javascript)
+    .pipe(plumber())
+    .pipe(uglify())
+    .pipe(gulp.dest(array_path.release.path));
+  arg_function_callback();
+}
+/* ========== copy_prototype2release ファイルのコピー(prototype to release) ========== */
+function copy_prototype2release(arg_function_callback) {
+  gulp.src(array_path.origin.copy)
+    .pipe(plumber())
+    .pipe(gulp.dest(array_path.prototype.path));
+  arg_function_callback();
+}
+
+
+/* ********** default ローカルテスト版作成 ********** */
+export default gulp.parallel(execution_ejs,execution_sass,execution_typescript,compless_image,copy_origin2prototype);
+
+/* ********** release 納品ファイル作成 ********** */
+export let release = gulp.parallel(compress_html,compress_php,compress_css,compress_javascript,copy_prototype2release);
