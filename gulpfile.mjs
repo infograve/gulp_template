@@ -43,10 +43,10 @@ var array_path = {
                   '!src/**/_*'
                 ],
     copy        :[
-                  'prototype/**/*',
-                  '!prototype/**/*.+(ejs|scss|ts|gif|jpg|png|svg)',
-                  '!prototype/_**/*',
-                  '!prototype/**/_*'
+                  'src/**/*',
+                  '!src/**/*.+(ejs|scss|ts|gif|jpg|png|svg)',
+                  '!src/_**/*',
+                  '!src/**/_*'
                 ]
               },
 /* ********** prototype (ローカルテスト) ********** */
