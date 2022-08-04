@@ -34,6 +34,14 @@ Windows だと .js ファイルを実行すると、Windows Scripting Host が�
 このセットには package.json が含まれているので、コマンド一発で使えるようになります。  
 `> npm install`
 
+## nodistで最近のnode.js入れると`> npm install`失敗する…
+たぶん、`npm ERR! code MODULE_NOT_FOUND`って怒られます。  
+なんの呪いか知らんけど、npmのモジュールが足りないっぽい。  
+
+[node.jsのサイト](https://nodejs.org/en/download/)から入れたnode.jsのzipを落として、  
+nodistフォルダの`npmv/<入れたnpmのバージョン>/node_modules`に、  
+zipの`node_modules/npm/node_modules`を入れたげると、動いたりする。
+
 ## 使い方
 * 非圧縮版の作成  
 組みながら、DevTool(F12の奴)で確認/実験する時に便利なコード非圧縮版を出します。  
