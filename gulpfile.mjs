@@ -13,6 +13,7 @@ import sassdart         from 'sass';
 import sassgulp         from 'gulp-sass';
 import typescript       from 'gulp-typescript';
 import uglify           from 'gulp-uglify';
+import yaml             from 'gulp-yaml';
 
 const sass          = sassgulp(sassdart);
 
@@ -37,6 +38,11 @@ var array_path = {
                   '!src/_**/*',
                   '!src/**/_*'
                 ],
+    yaml        :[
+                  'src/**/*.yml',
+                  '!src/_**/*',
+                  '!src/**/_*'
+                ],
     image       :[
                   'src/**/*.+(gif|jpg|png|svg)',
                   '!src/_**/*',
@@ -44,7 +50,7 @@ var array_path = {
                 ],
     copy        :[
                   'src/**/*',
-                  '!src/**/*.+(ejs|scss|ts|gif|jpg|png|svg)',
+                  '!src/**/*.+(ejs|scss|ts|yml|gif|jpg|png|svg)',
                   '!src/_**/*',
                   '!src/**/_*'
                 ]
@@ -109,6 +115,14 @@ function execution_typescript(arg_function_callback) {
   gulp.src(array_path.origin.typescript)
     .pipe(plumber())
     .pipe(typescript())
+    .pipe(gulp.dest(array_path.prototype.path));
+  arg_function_callback();
+}
+/* ========== execution_yaml YAMLのコンバート ========== */
+function execution_yaml(arg_function_callback) {
+  gulp.src(array_path.origin.yaml)
+    .pipe(plumber())
+    .pipe(yaml())
     .pipe(gulp.dest(array_path.prototype.path));
   arg_function_callback();
 }
@@ -178,7 +192,7 @@ function copy_prototype2release(arg_function_callback) {
 
 
 /* ********** default ローカルテスト版作成 ********** */
-export default gulp.parallel(execution_ejs,execution_sass,execution_typescript,compless_image,copy_origin2prototype);
+export default gulp.parallel(execution_ejs,execution_sass,execution_typescript,execution_yaml,compless_image,copy_origin2prototype);
 
 /* ********** release 納品ファイル作成 ********** */
 export let release = gulp.parallel(compress_html,compress_php,compress_css,compress_javascript,copy_prototype2release);
