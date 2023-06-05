@@ -17,11 +17,15 @@ Windows だと .js ファイルを実行すると、Windows Scripting Host が�
 	`> nvm list available`
 	`> nodist dist`
 
-	2.  使うバージョンを決めたら、インストール  
+	2. 使うバージョンを決めたら、インストール  
 	`> nvm install <version>`
 	`> nodist <version>`
 
-	3. nodist は npm のバージョン合わせが必要  
+	3. バージョンを切り替える  
+	`> nvm use <version>`
+	`> nodist <version>`
+
+	4. nodist は npm のバージョン合わせが必要  
 	`> nodist npm match`
 
 4. gulp のグローバルインストール  
