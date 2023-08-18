@@ -184,9 +184,9 @@ function compress_javascript(arg_function_callback) {
 }
 /* ========== copy_prototype2release ファイルのコピー(prototype to release) ========== */
 function copy_prototype2release(arg_function_callback) {
-  gulp.src(array_path.origin.copy)
+  gulp.src(array_path.prototype.copy)
     .pipe(plumber())
-    .pipe(gulp.dest(array_path.prototype.path));
+    .pipe(gulp.dest(array_path.release.path));
   arg_function_callback();
 }
 
