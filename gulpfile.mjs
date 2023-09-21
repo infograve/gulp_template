@@ -8,8 +8,10 @@ import imagemin         from 'gulp-imagemin';
 import imagemin_mozjpeg from 'imagemin-mozjpeg';
 import phtmlsimplecomp  from 'gulp-phtml-simple-comp';
 import plumber          from 'gulp-plumber';
+import postcss          from 'gulp-postcss';
+import postcss_mqpacker from 'css-mqpacker';
 import rename           from 'gulp-rename';
-import sassdart         from 'sass';
+import * as sassdart    from 'sass';
 import sassgulp         from 'gulp-sass';
 import typescript       from 'gulp-typescript';
 import uglify           from 'gulp-uglify';
@@ -107,6 +109,7 @@ function execution_sass(arg_function_callback) {
   gulp.src(array_path.origin.sass)
     .pipe(plumber())
     .pipe(sass({outputStyle:'expanded'}))
+    .pipe(postcss([postcss_mqpacker()]))
     .pipe(gulp.dest(array_path.prototype.path));
   arg_function_callback();
 }
