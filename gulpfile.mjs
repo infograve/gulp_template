@@ -1,21 +1,22 @@
 ;
 /* ########## モジュール読込 ########## */
-import gulp             from 'gulp';
-import cleancss         from 'gulp-clean-css';
-import ejs              from 'gulp-ejs';
-import htmlmin          from 'gulp-htmlmin';
-import imagemin         from 'gulp-imagemin';
-import imagemin_mozjpeg from 'imagemin-mozjpeg';
-import phtmlsimplecomp  from 'gulp-phtml-simple-comp';
-import plumber          from 'gulp-plumber';
-import postcss          from 'gulp-postcss';
-import postcss_mqpacker from 'css-mqpacker';
-import rename           from 'gulp-rename';
-import * as sassdart    from 'sass';
-import sassgulp         from 'gulp-sass';
-import typescript       from 'gulp-typescript';
-import uglify           from 'gulp-uglify';
-import yaml             from 'gulp-yaml';
+import gulp              from 'gulp';
+import cleancss          from 'gulp-clean-css';
+import ejs               from 'gulp-ejs';
+import htmlmin           from 'gulp-htmlmin';
+import imagemin          from 'gulp-imagemin';
+import imagemin_mozjpeg  from 'imagemin-mozjpeg';
+import imagemin_pngquant from 'imagemin-pngquant';
+import phpminifier       from '@cedx/php-minifier';
+import plumber           from 'gulp-plumber';
+import postcss           from 'gulp-postcss';
+import postcss_mqpacker  from 'css-mqpacker';
+import rename            from 'gulp-rename';
+import * as sassdart     from 'sass';
+import sassgulp          from 'gulp-sass';
+import typescript        from 'gulp-typescript';
+import uglify            from 'gulp-uglify';
+import yaml              from 'gulp-yaml';
 
 const sass          = sassgulp(sassdart);
 
@@ -27,33 +28,33 @@ var array_path = {
     path        :'src/',
     ejs         :[
                   'src/**/*.ejs',
-                  '!src/_**/*',
+                  '!src/**/_*/*',
                   '!src/**/_*'
                 ],
     sass        :[
                   'src/**/*.scss',
-                  '!src/_**/*',
+                  '!src/**/_*/*',
                   '!src/**/_*'
                 ],
     typescript  :[
                   'src/**/*.ts',
-                  '!src/_**/*',
+                  '!src/**/_*/*',
                   '!src/**/_*'
                 ],
     yaml        :[
                   'src/**/*.yml',
-                  '!src/_**/*',
+                  '!src/**/_*/*',
                   '!src/**/_*'
                 ],
     image       :[
                   'src/**/*.+(gif|jpg|png|svg)',
-                  '!src/_**/*',
+                  '!src/**/_*/*',
                   '!src/**/_*'
                 ],
     copy        :[
                   'src/**/*',
                   '!src/**/*.+(ejs|scss|ts|yml|gif|jpg|png|svg)',
-                  '!src/_**/*',
+                  '!src/**/_*/*',
                   '!src/**/_*'
                 ]
               },
@@ -62,29 +63,29 @@ var array_path = {
     path        :'prototype/',
     html        :[
                   'prototype/**/*.html',
-                  '!prototype/_**/*',
-                  '!prototype/**/_*'
+                  '!prototype/**/=*/*',
+                  '!prototype/**/=*'
                 ],
     php         :[
                   'prototype/**/*.php',
-                  '!prototype/_**/*',
-                  '!prototype/**/_*'
+                  '!prototype/**/=*/*',
+                  '!prototype/**/=*'
                 ],
     css         :[
                   'prototype/**/*.css',
-                  '!prototype/_**/*',
-                  '!prototype/**/_*'
+                  '!prototype/**/=*/*',
+                  '!prototype/**/=*'
                 ],
     javascript  :[
                   'prototype/**/*.js',
-                  '!prototype/_**/*',
-                  '!prototype/**/_*'
+                  '!prototype/**/=*/*',
+                  '!prototype/**/=*'
                 ],
     copy        :[
                   'prototype/**/*',
                   '!prototype/**/*.+(html|php|css|js)',
-                  '!prototype/_**/*',
-                  '!prototype/**/_*'
+                  '!prototype/**/=*/*',
+                  '!prototype/**/=*'
                 ]
               },
 /* ********** release (納品) ********** */
@@ -131,17 +132,18 @@ function execution_yaml(arg_function_callback) {
 }
 /* ========== compless_image 画像の圧縮 ========== */
 function compless_image(arg_function_callback) {
-  gulp.src(array_path.origin.image)
+  gulp.src(array_path.origin.image,{encoding:false})
     .pipe(plumber())
     .pipe(imagemin([
       imagemin_mozjpeg({progressive:true})
+      imagemin_pngquant()
     ]))
     .pipe(gulp.dest(array_path.prototype.path));
   arg_function_callback();
 }
 /* ========== copy_origin2prototype ファイルのコピー(origin to prototype) ========== */
 function copy_origin2prototype(arg_function_callback) {
-  gulp.src(array_path.origin.copy)
+  gulp.src(array_path.origin.copy,{encoding:false})
     .pipe(plumber())
     .pipe(gulp.dest(array_path.prototype.path));
   arg_function_callback();
@@ -165,7 +167,7 @@ function compress_html(arg_function_callback) {
 function compress_php(arg_function_callback) {
   gulp.src(array_path.prototype.php)
     .pipe(plumber())
-    .pipe(phtmlsimplecomp())
+    .pipe(phpminifier())
     .pipe(gulp.dest(array_path.release.path));
   arg_function_callback();
 }
@@ -187,7 +189,7 @@ function compress_javascript(arg_function_callback) {
 }
 /* ========== copy_prototype2release ファイルのコピー(prototype to release) ========== */
 function copy_prototype2release(arg_function_callback) {
-  gulp.src(array_path.prototype.copy)
+  gulp.src(array_path.prototype.copy,{encoding:false})
     .pipe(plumber())
     .pipe(gulp.dest(array_path.release.path));
   arg_function_callback();
