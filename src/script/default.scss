@@ -1,24 +1,21 @@
 @use "sass:math";
 
-// ########## Common ##########
-
-
-// ########## Contents ##########
 body{
   margin:0;
   line-height:0;
-} // ########## /body ##########
+  -webkit-text-size-adjust:100%; // -- iOSフォントアジャスト回避
+}// -- /body
 
 
-// ########## PC,Print ##########
+// -- PC,Print --
 @media (min-width:768px), print{
 
 
-} // ########## /@media (min-width:768px), print ##########
+}// -- /@media (min-width:768px), print
 
 
-// ########## OverSize ##########
+// -- OverSize --
 @media (min-width:1920px){
 
 
-} // ########## /@media (min-width:1920px) ##########
+}// -- @media (min-width:1920px)

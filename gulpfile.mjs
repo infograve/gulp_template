@@ -7,7 +7,7 @@ import htmlmin           from 'gulp-htmlmin';
 import imagemin          from 'gulp-imagemin';
 import imagemin_mozjpeg  from 'imagemin-mozjpeg';
 import imagemin_pngquant from 'imagemin-pngquant';
-import phpminifier       from '@cedx/php-minifier';
+import * as phpminifier  from '@cedx/php-minifier';
 import plumber           from 'gulp-plumber';
 import postcss           from 'gulp-postcss';
 import postcss_mqpacker  from 'css-mqpacker';
@@ -135,7 +135,7 @@ function compless_image(arg_function_callback) {
   gulp.src(array_path.origin.image,{encoding:false})
     .pipe(plumber())
     .pipe(imagemin([
-      imagemin_mozjpeg({progressive:true})
+      imagemin_mozjpeg({progressive:true}),
       imagemin_pngquant()
     ]))
     .pipe(gulp.dest(array_path.prototype.path));

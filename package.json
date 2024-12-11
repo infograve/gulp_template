@@ -9,25 +9,25 @@
   "author": "infograve",
   "license": "MIT",
   "dependencies": {
-    "@cedx/php-minifier": "^2.1.1",
-    "@types/jquery": "^3.5.29",
+    "@cedx/php-minifier": "^5.0.2",
+    "@types/jquery": "^3.5.32",
     "css-mqpacker": "^7.0.0",
     "esm": "^3.2.25",
     "gulp": "^5.0.0",
     "gulp-clean-css": "^4.3.0",
     "gulp-ejs": "^5.1.0",
     "gulp-htmlmin": "^5.0.1",
-    "gulp-imagemin": "^9.0.0",
+    "gulp-imagemin": "^9.1.0",
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^10.0.0",
     "gulp-rename": "^2.0.0",
-    "gulp-sass": "^5.1.0",
+    "gulp-sass": "^6.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-uglify": "^3.0.2",
     "gulp-yaml": "^2.0.4",
     "imagemin-mozjpeg": "^10.0.0",
-    "imagemin-pngquant": "^9.0.2",
-    "sass": "^1.75.0",
-    "typescript": "^5.4.5"
+    "imagemin-pngquant": "^10.0.0",
+    "sass": "^1.82.0",
+    "typescript": "^5.7.2"
   }
 }
